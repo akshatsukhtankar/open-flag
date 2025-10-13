@@ -1,0 +1,29 @@
+{
+  "name": "@openflag/sdk",
+  "version": "0.1.0",
+  "description": "Node.js SDK for OpenFlag feature flag service",
+  "main": "src/index.js",
+  "scripts": {
+    "test": "jest",
+    "test:watch": "jest --watch",
+    "test:coverage": "jest --coverage"
+  },
+  "keywords": [
+    "feature-flags",
+    "feature-toggles",
+    "openflag",
+    "sdk"
+  ],
+  "author": "OpenFlag",
+  "license": "MIT",
+  "devDependencies": {
+    "jest": "^29.7.0",
+    "nock": "^13.3.8"
+  },
+  "dependencies": {
+    "node-fetch": "^2.7.0"
+  },
+  "engines": {
+    "node": ">=14.0.0"
+  }
+}

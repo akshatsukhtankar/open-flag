@@ -17,9 +17,9 @@ Feature flags (feature toggles) let you:
 - ✅ **REST API** - Full CRUD operations for feature flags
 - ✅ **Type Safety** - Boolean, string, number, and JSON flag types with validation
 - ✅ **Fast Reads** - In-memory caching (30s TTL)
+- ✅ **Node.js SDK** - Client library with local caching and auto-refresh
 - ✅ **Self-Hosted** - SQLite for dev, PostgreSQL for production
-- 🚧 **Web Dashboard** - Coming in Sprint 3
-- 🚧 **Node.js SDK** - Coming in Sprint 2
+- 🚧 **Web Dashboard** - Coming soon
 
 ## Quick Start
 
@@ -38,7 +38,20 @@ Feature flags (feature toggles) let you:
 
 The API will be available at `http://localhost:8000`
 
-### Manual Setup
+### SDK (Node.js)
+
+```bash
+cd sdk
+npm install
+npm test
+
+# Run example (requires backend running)
+node example.js
+```
+
+See [sdk/README.md](./sdk/README.md) for full SDK documentation.
+
+### Manual Backend Setup
 
 ```bash
 # Create virtual environment
@@ -52,6 +65,38 @@ pip install -r backend/requirements.txt
 cd backend
 PYTHONPATH=$PWD uvicorn app.main:app --reload --port 8000
 ```
+
+## SDK Usage
+
+### Installation
+
+```bash
+npm install @openflag/sdk  # When published
+# Or use locally: cd sdk && npm install
+```
+
+### Quick Example
+
+```javascript
+const { OpenFlagClient } = require('@openflag/sdk');
+
+const client = new OpenFlagClient({
+  apiUrl: 'http://localhost:8000',
+  cacheTTL: 30000,        // Cache for 30 seconds
+  refreshInterval: 60000  // Auto-refresh every 60 seconds
+});
+
+// Check if a feature is enabled
+const isEnabled = await client.isEnabled('dark_mode', false);
+
+// Get a flag value with fallback
+const apiUrl = await client.getFlag('api_url', 'https://default.com');
+
+// Get all flags
+const flags = await client.getAllFlags();
+```
+
+See [sdk/README.md](./sdk/README.md) for complete documentation and examples.
 
 ## Usage
 
@@ -155,7 +200,6 @@ All 25 tests should pass:
 
 ## Future Improvements
 
-- Node.js SDK with local caching and auto-refresh
 - React web dashboard for managing flags
 - Docker containerization for easy deployment
 - PostgreSQL support for production workloads
@@ -165,6 +209,7 @@ All 25 tests should pass:
 - Multi-environment support (dev, staging, prod)
 - Flag scheduling (enable/disable at specific times)
 - A/B testing and gradual rollout support
+- WebSocket support for real-time flag updates
 
 ## Contributing
 

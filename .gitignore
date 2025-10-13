@@ -63,3 +63,6 @@ build/
 
 # Docker
 .dockerignore
+
+# Sprint Reports
+SPRINT*_REPORT.md
