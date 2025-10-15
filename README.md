@@ -16,14 +16,32 @@ Feature flags (feature toggles) let you:
 
 - ✅ **REST API** - Full CRUD operations for feature flags
 - ✅ **Type Safety** - Boolean, string, number, and JSON flag types with validation
-- ✅ **Fast Reads** - In-memory caching (30s TTL)
+- ✅ **Distributed Caching** - Redis support with in-memory fallback
 - ✅ **Node.js SDK** - Client library with local caching and auto-refresh
-- ✅ **Self-Hosted** - SQLite for dev, PostgreSQL for production
-- 🚧 **Web Dashboard** - Coming soon
+- ✅ **Web Dashboard** - React UI for managing flags
+- ✅ **Docker Ready** - Complete containerization with Docker Compose
+- ✅ **Production Ready** - PostgreSQL, Redis, health checks, logging
 
 ## Quick Start
 
-### Using the Helper Script (Recommended)
+### 🐳 Docker (Recommended for Production)
+
+```bash
+# One-command start
+./start.sh
+
+# Or manually:
+docker-compose up -d
+```
+
+Access at:
+- **Frontend**: http://localhost
+- **Backend**: http://localhost:8000
+- **API Docs**: http://localhost:8000/docs
+
+See [DEPLOYMENT.md](./DEPLOYMENT.md) for full deployment guide.
+
+### 💻 Local Development
 
 ```bash
 # Install dependencies
@@ -50,34 +68,6 @@ node example.js
 ```
 
 See [sdk/README.md](./sdk/README.md) for full SDK documentation.
-
-### Manual Backend Setup
-
-```bash
-# Create virtual environment
-python3 -m venv .venv
-source .venv/bin/activate
-
-# Install dependencies
-pip install -r backend/requirements.txt
-
-# Start server
-cd backend
-PYTHONPATH=$PWD uvicorn app.main:app --reload --port 8000
-```
-
-## SDK Usage
-
-### Installation
-
-```bash
-npm install @openflag/sdk  # When published
-# Or use locally: cd sdk && npm install
-```
-
-### Quick Example
-
-```javascript
 const { OpenFlagClient } = require('@openflag/sdk');
 
 const client = new OpenFlagClient({

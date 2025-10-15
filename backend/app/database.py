@@ -1,15 +1,21 @@
 """Database configuration and session management"""
 from sqlmodel import SQLModel, create_engine, Session
 from typing import Generator
-
-# SQLite database URL - will create file in backend directory
-DATABASE_URL = "sqlite:///./openflag.db"
+from .config import settings
 
 # Create engine with connection pooling
+# Supports both SQLite (development) and PostgreSQL (production)
+connect_args = {}
+if settings.database_url.startswith("sqlite"):
+    connect_args = {"check_same_thread": False}
+
 engine = create_engine(
-    DATABASE_URL,
-    echo=True,  # Log SQL queries in development
-    connect_args={"check_same_thread": False}  # Needed for SQLite
+    settings.database_url,
+    echo=(settings.environment == "development"),  # Log SQL queries in development
+    connect_args=connect_args,
+    pool_pre_ping=True,  # Verify connections before using
+    pool_size=5,  # Connection pool size
+    max_overflow=10,  # Max overflow connections
 )
 
 
